@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 
 import 'package:hive/hive.dart';
@@ -12,6 +14,7 @@ class ToDo extends StatefulWidget {
 
 class _ToDoState extends State<ToDo> {
   TextEditingController taskController = TextEditingController();
+  TextEditingController UpdateTaskController = TextEditingController();
 
   Box? box;
 
@@ -61,7 +64,48 @@ class _ToDoState extends State<ToDo> {
                             onTap: () => showDialog(
                                 context: context,
                                 builder: (context) => AlertDialog(
-                                      title: Text(box!.getAt(index)),
+                                      content: SizedBox(
+                                        height: 100,
+                                        width: double.infinity,
+                                        child: Column(
+                                          children: [
+                                            TextField(
+                                              controller: UpdateTaskController,
+                                              decoration: InputDecoration(
+                                                  hintText: box!
+                                                      .getAt(index)
+                                                      .toString()),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                ElevatedButton(
+                                                    onPressed: () {
+                                                      if (!UpdateTaskController
+                                                          .text.isEmpty) {
+                                                        box!.putAt(
+                                                            index,
+                                                            UpdateTaskController
+                                                                .text);
+                                                      }
+                                                    },
+                                                    child: Text("Update")),
+                                                ElevatedButton(
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            primary:
+                                                                Colors.red),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text("Cancel"))
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     )),
                             child: Card(
                               elevation: 2,
